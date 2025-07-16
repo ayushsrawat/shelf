@@ -1,0 +1,111 @@
+
+.add-article-container {
+    max-width: 450px;
+    margin: 20px auto; /* Still center it within its available width */
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    text-align: left;
+  }
+  
+  .add-article-container h2 {
+    text-align: center;
+    color: #4a4a4a;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+  }
+  
+  .add-article-container .form-group {
+    margin-bottom: 25px;
+  }
+  
+  .add-article-container label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #555555;
+    font-size: 1.05em;
+  }
+  
+  .add-article-container input[type="text"],
+  .add-article-container input[type="url"],
+  .add-article-container input[type="password"],
+  .add-article-container textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .add-article-container textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.5;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .add-article-container input:focus,
+  .add-article-container textarea:focus {
+    outline: none;
+    border-color: #666666;
+    box-shadow: 0 0 0 3px rgba(102, 102, 102, 0.2);
+  }
+  
+  .add-article-container small {
+      display: block;
+      margin-top: 5px;
+      color: #777;
+      font-size: 0.85em;
+  }
+  
+  .add-article-container button {
+    display: block;
+    width: 100%;
+    padding: 14px 20px;
+    background-color: #666666;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.15em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .add-article-container button:hover:not(:disabled) {
+    background-color: #4a4a4a;
+    transform: translateY(-2px);
+  }
+  
+  .add-article-container button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  .add-article-container .form-message {
+    margin-top: 25px;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    text-align: center;
+    font-size: 0.95em;
+  }
+  
+  .add-article-container .form-message.error {
+    background-color: #fcebeb;
+    color: #d84315;
+    border: 1px solid #efb7a0;
+  }
+  
+  .add-article-container .form-message.success {
+    background-color: #e6f7e6;
+    color: #388e3c;
+    border: 1px solid #c8e6c9;
+  }

@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import TabbedContent from "./components/TabbedContent";
-import { getArticles } from "./utils/dataFetcher"; // Use dataFetcher
+import { Routes, Route, useLocation, Link } from "react-router-dom";
+import { getArticles } from "./utils/dataFetcher";
 import type { Article } from "./interfaces/Article";
+import HomePageView from "./pages/HomePageView";
+import AddArticlePage from "./pages/AddArticlePage";
 import "./App.css";
 
 function App() {
@@ -9,25 +11,27 @@ function App() {
   const [activeTab, setActiveTab] = useState<"websites" | "articles">("articles");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const location = useLocation();
+
+  const fetchArticles = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const fetchedArticles = await getArticles();
+      setArticles(fetchedArticles);
+    } catch (err) {
+      console.error("Failed to load articles:", err);
+      setError("Failed to load articles. Please check your network or Gist URL.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchAndSetArticles = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const fetchedArticles = await getArticles();
-        setArticles(fetchedArticles);
-        console.log("Articles after fetch/cache load:", fetchedArticles);
-      } catch (err) {
-        console.error("Failed to load articles:", err);
-        setError("Failed to load articles. Please check your network or Gist URL.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAndSetArticles();
-  }, []);
+    if (location.pathname === "/") {
+      fetchArticles();
+    }
+  }, [location.pathname]);
 
   const websiteUrls: { name: string; url: string }[] = Array.isArray(articles)
     ? Array.from(new Set(articles.map((article) => article.website))).map((websiteName) => {
@@ -44,47 +48,42 @@ function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1>Shelf</h1>
-        <nav className="tabs">
-          <button className={activeTab === "websites" ? "active" : ""} onClick={() => setActiveTab("websites")}>
-            Websites
-          </button>
-          <button className={activeTab === "articles" ? "active" : ""} onClick={() => setActiveTab("articles")}>
-            Articles
-          </button>
-        </nav>
+        <h1>
+          {location.pathname === "/admin" ? (
+            <Link to="/" className="app-title-link">
+              Shelf
+            </Link>
+          ) : (
+            "Shelf"
+          )}
+        </h1>
       </header>
 
-      <main className="app-main">
-        {loading && <p className="loading-message">Loading articles from your Shelf...</p>}
-        {error && <p className="error-message">{error}</p>}
-
-        {!loading && !error /* Ensure content renders only when not loading/error */ && (
-          <>
-            {activeTab === "websites" && (
-              <div className="websites-list">
-                {" "}
-                {/* websites-list already has fadeIn animation applied */}
-                <h2>Tracked Websites</h2>
-                {websiteUrls.length === 0 ? (
-                  <p>No websites found. Add articles to your Gist to see them here!</p>
-                ) : (
-                  <ul>
-                    {websiteUrls.map((site, index) => (
-                      <li key={index}>
-                        <a href={site.url} target="_blank" rel="noopener noreferrer">
-                          {site.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <HomePageView
+              articles={articles}
+              loading={loading}
+              error={error}
+              websiteUrls={websiteUrls}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <main className="app-main">
+              <div className="tab-content-wrapper admin-wrapper">
+                <AddArticlePage />
               </div>
-            )}
-            {activeTab === "articles" && <TabbedContent articles={articles} />}
-          </>
-        )}
-      </main>
+            </main>
+          }
+        />
+      </Routes>
     </div>
   );
 }
