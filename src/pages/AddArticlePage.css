@@ -109,3 +109,62 @@
     color: #388e3c;
     border: 1px solid #c8e6c9;
   }
+
+/* Dark Theme */
+.dark .add-article-container {
+  background-color: #2c2c2c;
+  border-color: #444;
+}
+
+.dark .add-article-container h2 {
+  color: #f1f1f1;
+}
+
+.dark .add-article-container label {
+  color: #d1d1d1;
+}
+
+.dark .add-article-container input[type="text"],
+.dark .add-article-container input[type="url"],
+.dark .add-article-container input[type="password"],
+.dark .add-article-container textarea {
+  background-color: #333;
+  border-color: #555;
+  color: #f1f1f1;
+}
+
+.dark .add-article-container input:focus,
+.dark .add-article-container textarea:focus {
+  border-color: #888;
+  box-shadow: 0 0 0 3px rgba(136, 136, 136, 0.25);
+}
+
+.dark .add-article-container small {
+  color: #999;
+}
+
+.dark .add-article-container button {
+  background-color: #f1f1f1;
+  color: #1a1a1a;
+}
+
+.dark .add-article-container button:hover:not(:disabled) {
+  background-color: #ffffff;
+}
+
+.dark .add-article-container button:disabled {
+  background-color: #444;
+  color: #888;
+}
+
+.dark .add-article-container .form-message.error {
+  background-color: #4d1a1a;
+  color: #ff8a80;
+  border-color: #803333;
+}
+
+.dark .add-article-container .form-message.success {
+  background-color: #1a4d1a;
+  color: #80ff80;
+  border-color: #338033;
+}

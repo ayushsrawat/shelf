@@ -40,3 +40,22 @@
     margin-bottom: 0;
     font-style: italic;
   }
+
+/* Dark Theme */
+.dark .article-card-link {
+  background-color: #2a2a2a;
+  border-color: #444444;
+}
+
+.dark .article-card-link:hover {
+  background-color: #3a3a3a;
+  border-color: #555555;
+}
+
+.dark .article-card-link h3 {
+  color: #ffffff;
+}
+
+.dark .article-card-link .website-name {
+  color: #bbbbbb;
+}

@@ -4,6 +4,7 @@ import { getArticles } from "./utils/dataFetcher";
 import type { Article } from "./interfaces/Article";
 import HomePageView from "./pages/HomePageView";
 import AddArticlePage from "./pages/AddArticlePage";
+import ThemeToggle from "./components/ThemeToggle";
 import "./App.css";
 
 function App() {
@@ -11,7 +12,19 @@ function App() {
   const [activeTab, setActiveTab] = useState<"websites" | "articles">("articles");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [theme, setTheme] = useState("dark");
   const location = useLocation();
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    document.documentElement.classList.remove(theme);
+    document.documentElement.classList.add(newTheme);
+    setTheme(newTheme);
+  };
+
+  useEffect(() => {
+    document.documentElement.classList.add(theme);
+  }, []);
 
   const fetchArticles = async () => {
     setLoading(true);
@@ -46,7 +59,8 @@ function App() {
     : [];
 
   return (
-    <div className="app-container">
+    <div className={`app-container`}>
+      <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
       <header className="app-header">
         <h1>
           {location.pathname === "/admin" ? (

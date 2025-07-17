@@ -1,3 +1,25 @@
+:root {
+  --background-color-light: #ffffff;
+  --text-color-light: #4a4a4a;
+  --border-color-light: #e0e0e0;
+  --header-color-light: #4a4a4a;
+
+  --background-color-dark: #1a1a1a;
+  --text-color-dark: #ffffff;
+  --border-color-dark: #333333;
+  --header-color-dark: #ffffff;
+}
+
+html.light {
+  background-color: var(--background-color-light);
+  color: var(--text-color-light);
+}
+
+html.dark {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-dark);
+}
+
 html, body, #root {
   height: 100%;
   margin: 0;
@@ -16,22 +38,37 @@ html, body, #root {
   height: 90vh;
 
   padding: 25px;
-  background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e0e0e0;
 
   display: flex; /* Use flexbox to manage internal layout (header, tabs, main) */
   flex-direction: column; /* Stack children vertically */
   overflow: hidden; /* Hide any content that tries to escape the container boundaries */
 }
 
+html.light .app-container {
+  background-color: transparent;
+  border: 1px solid var(--border-color-light);
+}
+
+html.dark .app-container {
+  background-color: transparent;
+  border: 1px solid var(--border-color-dark);
+}
+
 .app-header {
   text-decoration: none;
-  color: inherit;
   text-align: center;
   margin-bottom: 25px; /* More space */
   flex-shrink: 0;
+}
+
+html.light .app-header {
+  color: var(--text-color-light);
+}
+
+html.dark .app-header {
+  color: var(--text-color-dark);
 }
 
 .app-title-link {
@@ -44,9 +81,16 @@ html, body, #root {
 }
 
 .app-header h1 {
-  color: #4a4a4a; /* Darker gray for heading */
   margin-bottom: 20px;
   font-size: 2.2em; /* Slightly larger title */
+}
+
+html.light .app-header h1 {
+  color: var(--header-color-light);
+}
+
+html.dark .app-header h1 {
+  color: var(--header-color-dark);
 }
 
 .app-main {
@@ -58,4 +102,10 @@ html, body, #root {
   flex-direction: column;
   justify-content: flex-start; /* Align content to the start (top) by default */
   min-height: 0;
+}
+
+.dark .loading-message {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #444444;
 }

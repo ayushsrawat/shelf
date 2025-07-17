@@ -1,4 +1,4 @@
-  .tabs {
+.tabs {
     display: flex;
     justify-content: center;
     border-bottom: 1px solid #dcdcdc; /* Lighter, subtle border */
@@ -21,14 +21,14 @@
   
   .tabs button:hover {
     color: #555555; /* Slightly darker gray on hover */
-    background-color: #f7f7f7; /* Very light gray background on hover */
+    background-color: transparent; /* Very light gray background on hover */
   }
   
   .tabs button.active {
     color: #333333; /* Darker gray for active tab */
     border-bottom: 3px solid #666666; /* Gray underline for active tab */
     font-weight: 600; /* Bolder active tab */
-    background-color: #fafafa; /* Very light gray background for active tab */
+    background-color: transparent;
   }
   
   .websites-list,
@@ -118,3 +118,43 @@
     text-decoration: underline;
     color: #4a4a4a; /* Darker gray on hover */
   }
+
+/* Dark Theme */
+.dark .tabs {
+  border-bottom-color: #444444;
+}
+
+.dark .tabs button {
+  color: #bbbbbb;
+}
+
+.dark .tabs button:hover {
+  color: #ffffff;
+}
+
+.dark .tabs button.active {
+  color: #ffffff;
+  border-bottom-color: #ffffff;
+}
+
+.dark .websites-list h2 {
+  color: #ffffff;
+}
+
+.dark .websites-list li {
+  background-color: #2a2a2a;
+  border-color: #444444;
+}
+
+.dark .websites-list li:hover {
+  background-color: #3a3a3a;
+  border-color: #555555;
+}
+
+.dark .websites-list li a {
+  color: #bbbbbb;
+}
+
+.dark .websites-list li a:hover {
+  color: #ffffff;
+}

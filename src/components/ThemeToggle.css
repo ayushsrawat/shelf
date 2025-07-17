@@ -1,0 +1,39 @@
+.theme-toggle-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: transparent;
+    border: 1px solid var(--border-color-light);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .dark .theme-toggle-button {
+    border-color: var(--border-color-dark);
+  }
+  
+  .theme-toggle-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  .dark .theme-toggle-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .theme-toggle-button svg {
+    width: 20px;
+    height: 20px;
+    color: var(--text-color-light);
+    transition: color 0.3s ease;
+  }
+  
+  .dark .theme-toggle-button svg {
+    color: var(--text-color-dark);
+  }
