@@ -9,7 +9,7 @@ import "./App.css";
 
 function App() {
   const [articles, setArticles] = useState<Article[]>([]);
-  const [activeTab, setActiveTab] = useState<"websites" | "articles">("articles");
+  const [activeTab, setActiveTab] = useState<"authors" | "articles">("articles");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [theme, setTheme] = useState("dark");

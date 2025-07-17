@@ -1,6 +1,6 @@
 export interface Article {
     title: string;
     url: string;
-    website: string;
+    author: string;
     category?: string;
   }

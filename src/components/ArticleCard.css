@@ -42,7 +42,7 @@
   width: 100%;
 }
 
-.website-name {
+.author-name {
   font-size: 0.9em;
   color: #6a6a6a;
   font-style: italic;
@@ -73,7 +73,7 @@
   color: var(--text-color-dark);
 }
 
-.dark .website-name {
+.dark .author-name {
   color: #bbbbbb;
 }
 

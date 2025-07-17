@@ -14,7 +14,7 @@ function ArticleCard({ article }: ArticleCardProps) {
         <h3>{article.title}</h3>
       </div>
       <div className="article-card-footer">
-        {article.website && <p className="website-name">{article.website}</p>}
+        {article.author && <p className="author-name">{article.author}</p>}
         {categories.slice(0, 2).map((category, index) => (
           <span key={index} className="category-badge">
             {category}

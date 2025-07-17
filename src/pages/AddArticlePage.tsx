@@ -4,7 +4,7 @@ import "./AddArticlePage.css";
 function AddArticlePage() {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
-  const [website, setWebsite] = useState("");
+  const [author, setAuthor] = useState("");
   const [message, setMessage] = useState(""); // To show success/error messages
   const [isSubmitting, setIsSubmitting] = useState(false); // To disable button during submission
 
@@ -14,7 +14,7 @@ function AddArticlePage() {
     setIsSubmitting(true); // Disable button
 
     // Basic client-side validation
-    if (!title || !url || !website) {
+    if (!title || !url || !author) {
       setMessage("Please fill in all fields.");
       setIsSubmitting(false);
       return;
@@ -31,7 +31,7 @@ function AddArticlePage() {
           "Content-Type": "application/json",
           "X-Admin-Key": ADMIN_FRONTEND_KEY, // Custom header for your secret
         },
-        body: JSON.stringify({ title, url, website }),
+        body: JSON.stringify({ title, url, author }),
       });
 
       const data = await response.json(); // Parse the JSON response from the function
@@ -42,7 +42,7 @@ function AddArticlePage() {
         // Clear form fields on success
         setTitle("");
         setUrl("");
-        setWebsite("");
+        setAuthor("");
       } else {
         // Handle errors from the function
         setMessage(`Error: ${data.message || "Something went wrong."}`);
@@ -82,14 +82,14 @@ function AddArticlePage() {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="website">Website/Source:</label>
+          <label htmlFor="author">Author:</label>
           <input
             type="text"
-            id="website"
-            value={website}
-            onChange={(e) => setWebsite(e.target.value)}
+            id="author"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
             required
-            aria-label="Website Name"
+            aria-label="Author Name"
           />
         </div>
         <button type="submit" disabled={isSubmitting}>

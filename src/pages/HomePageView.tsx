@@ -3,11 +3,36 @@ import type { Article } from "../interfaces/Article";
 import ArticleCard from "../components/ArticleCard";
 import "./HomePageView.css";
 
-interface Website {
+interface Author {
   name: string;
   url: string;
   categories: string[];
 }
+
+const getSmartSourceURL = (url: string): string => {
+  try {
+    const urlObject = new URL(url);
+    const hostname = urlObject.hostname;
+    const pathParts = urlObject.pathname.split("/").filter(Boolean);
+
+    if (hostname.includes("github.com") || hostname.includes("gitlab.com")) {
+      if (pathParts.length >= 2) {
+        return `${urlObject.protocol}//${hostname}/${pathParts[0]}/${pathParts[1]}`;
+      }
+    }
+
+    if (hostname.includes("medium.com") || hostname.includes("dev.to")) {
+      if (pathParts.length > 0 && pathParts[0].startsWith("@")) {
+        return `${urlObject.protocol}//${hostname}/${pathParts[0]}`;
+      }
+    }
+    
+    return urlObject.origin;
+  } catch (e) {
+    console.warn(`Could not parse URL for smart source URL: ${url}`, e);
+    return "#";
+  }
+};
 
 function HomePageView({
   articles,
@@ -19,36 +44,31 @@ function HomePageView({
   articles: Article[];
   loading: boolean;
   error: string | null;
-  activeTab: "websites" | "articles";
-  setActiveTab: React.Dispatch<React.SetStateAction<"websites" | "articles">>;
+  activeTab: "authors" | "articles";
+  setActiveTab: React.Dispatch<React.SetStateAction<"authors" | "articles">>;
 }) {
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
 
-  const { categories, websites } = useMemo(() => {
+  const { categories, authors } = useMemo(() => {
     const allCategories = new Set<string>();
-    const websiteData: { [key: string]: { url: string; categories: Set<string> } } = {};
+    const authorData: { [key: string]: { url: string; categories: Set<string> } } = {};
 
     articles.forEach((article) => {
       const articleCategories = article.category ? article.category.split(",").map((c) => c.trim()) : [];
       articleCategories.forEach((cat) => allCategories.add(cat));
 
-      if (!websiteData[article.website]) {
-        try {
-          websiteData[article.website] = {
-            url: new URL(article.url).origin,
-            categories: new Set(),
-          };
-        } catch (e) {
-          console.warn(`Could not parse URL for website: ${article.website}`, e);
-          websiteData[article.website] = { url: "#", categories: new Set() };
-        }
+      if (!authorData[article.author]) {
+        authorData[article.author] = {
+          url: getSmartSourceURL(article.url),
+          categories: new Set(),
+        };
       }
-      articleCategories.forEach((cat) => websiteData[article.website].categories.add(cat));
+      articleCategories.forEach((cat) => authorData[article.author].categories.add(cat));
     });
 
-    const finalWebsites: Website[] = Object.entries(websiteData).map(([name, data]) => ({
+    const finalAuthors: Author[] = Object.entries(authorData).map(([name, data]) => ({
       name,
       url: data.url,
       categories: Array.from(data.categories),
@@ -56,7 +76,7 @@ function HomePageView({
 
     return {
       categories: ["All", ...Array.from(allCategories).sort()],
-      websites: finalWebsites,
+      authors: finalAuthors,
     };
   }, [articles]);
 
@@ -80,7 +100,7 @@ function HomePageView({
         const searchMatch =
           !debouncedSearchTerm ||
           article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-          article.website.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+          article.author.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
           (article.category &&
             article.category.toLowerCase().includes(debouncedSearchTerm.toLowerCase()));
         
@@ -89,26 +109,26 @@ function HomePageView({
       .sort((a, b) => a.title.localeCompare(b.title));
   }, [articles, activeCategory, debouncedSearchTerm]);
 
-  const filteredWebsites = useMemo(() => {
-    return websites
-      .filter((website) => {
+  const filteredAuthors = useMemo(() => {
+    return authors
+      .filter((author) => {
         const categoryMatch =
-          activeCategory === "All" || website.categories.includes(activeCategory);
+          activeCategory === "All" || author.categories.includes(activeCategory);
 
         const searchMatch =
           !debouncedSearchTerm ||
-          website.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
+          author.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
         
         return categoryMatch && searchMatch;
       })
       .sort((a, b) => a.name.localeCompare(b.name));
-  }, [websites, activeCategory, debouncedSearchTerm]);
+  }, [authors, activeCategory, debouncedSearchTerm]);
 
   return (
     <>
       <nav className="tabs">
-        <button className={activeTab === "websites" ? "active" : ""} onClick={() => setActiveTab("websites")}>
-          Websites
+        <button className={activeTab === "authors" ? "active" : ""} onClick={() => setActiveTab("authors")}>
+          Authors
         </button>
         <button className={activeTab === "articles" ? "active" : ""} onClick={() => setActiveTab("articles")}>
           Articles
@@ -144,18 +164,18 @@ function HomePageView({
 
         {!loading && !error && (
           <>
-            {activeTab === "websites" && (
+            {activeTab === "authors" && (
               <div className="content-list">
-                {filteredWebsites.length === 0 ? (
-                  <p>No websites found.</p>
+                {filteredAuthors.length === 0 ? (
+                  <p>No authors found.</p>
                 ) : (
-                  filteredWebsites.map((site, index) => (
+                  filteredAuthors.map((site, index) => (
                     <ArticleCard
                       key={index}
                       article={{
                         url: site.url,
                         title: site.name,
-                        website: '',
+                        author: '',
                         category: site.categories.join(', ')
                       }}
                     />

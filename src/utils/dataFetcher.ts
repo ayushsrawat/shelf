@@ -9,7 +9,7 @@ export const getArticles = async (): Promise<Article[]> => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const articles: Article[] = await response.json();
-    console.log(`Fetched ${articles.length} articles from Gist.`);
+    // console.log(`Fetched ${articles.length} articles from Gist.`);
     return articles;
   } catch (error) {
     console.error("Failed to fetch articles from Gist:", error);
