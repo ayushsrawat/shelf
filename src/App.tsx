@@ -46,18 +46,6 @@ function App() {
     }
   }, [location.pathname]);
 
-  const websiteUrls: { name: string; url: string }[] = Array.isArray(articles)
-    ? Array.from(new Set(articles.map((article) => article.website))).map((websiteName) => {
-        const article = articles.find((a) => a.website === websiteName);
-        try {
-          return { name: websiteName, url: article ? new URL(article.url).origin : "#" };
-        } catch (e) {
-          console.warn(`Could not parse URL for website: ${websiteName}`, e);
-          return { name: websiteName, url: "#" };
-        }
-      })
-    : [];
-
   return (
     <div className={`app-container`}>
       <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
@@ -81,7 +69,6 @@ function App() {
               articles={articles}
               loading={loading}
               error={error}
-              websiteUrls={websiteUrls}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
             />
