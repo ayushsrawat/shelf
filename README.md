@@ -6,7 +6,10 @@
 
 ```bash
 git clone https://github.com/ayushsrawat/shelf.git
-cd shelf
+
+cd shelf/ui
+
 npm install
+
 npm run dev
 ```
