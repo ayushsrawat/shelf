@@ -10,6 +10,7 @@ function ArticleCard({ article }: ArticleCardProps) {
 
   return (
     <a href={article.url} target="_blank" rel="noopener noreferrer" className="article-card-link">
+      {article.read && <div className="read-indicator" title="Read"></div>}
       <div className="article-card-content">
         <h3>{article.title}</h3>
       </div>
