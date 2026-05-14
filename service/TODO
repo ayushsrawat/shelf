@@ -1,0 +1,9 @@
+[ ] Connect the service to mongo db hosted on mongo atlas
+[ ] Since this gonna be hosted on render, which acts as a serverless func, use as little deps as possible for faster uptime
+[ ] Gonna be a simple service :
+    1. (Public) articles endpoint, same that is hosted on gist right now
+[ ] Admin Panel
+    1. Admins can log in, see every article in there
+    2. Admins can remove, edit or add an article
+[ ] shelf can be hosted as shelf.ayushrawat.in
+[ ] shelf ui can be like the new ui's of render, railway, etc like grid boxes
