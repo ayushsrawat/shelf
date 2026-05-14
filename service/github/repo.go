@@ -20,13 +20,17 @@ type UpdateFileRequest struct {
 	Message string `json:"message"`
 	Content string `json:"content"` // base64 encoded
 	SHA     string `json:"sha,omitempty"`
+	Branch  string `json:"branch"`
 }
 
 func UpdateArticlesInRepo(cfg config.Config, articles []models.Article) error {
 	apiURL := fmt.Sprintf("https://api.github.com/repos/%s/%s/contents/%s", cfg.GitHubOwner, cfg.GitHubRepo, cfg.GitHubPath)
+	getURL := apiURL
+	if cfg.GitHubBranch != "" {
+		getURL = fmt.Sprintf("%s?ref=%s", apiURL, cfg.GitHubBranch)
+	}
 
-	// 1. Get the current file to get its SHA
-	req, err := http.NewRequest(http.MethodGet, apiURL, nil)
+	req, err := http.NewRequest(http.MethodGet, getURL, nil)
 	if err != nil {
 		return err
 	}
@@ -52,18 +56,17 @@ func UpdateArticlesInRepo(cfg config.Config, articles []models.Article) error {
 		return fmt.Errorf("failed to get file info: status %d, body: %s", resp.StatusCode, string(bodyBytes))
 	}
 
-	// 2. Prepare the new content
 	jsonData, err := json.MarshalIndent(articles, "", "  ")
 	if err != nil {
 		return err
 	}
 	encodedContent := base64.StdEncoding.EncodeToString(jsonData)
 
-	// 3. Update the file
 	updateReqBody := UpdateFileRequest{
 		Message: "Auto-update articles from Shelf Admin",
 		Content: encodedContent,
 		SHA:     sha,
+		Branch:  cfg.GitHubBranch,
 	}
 
 	reqBodyBytes, err := json.Marshal(updateReqBody)

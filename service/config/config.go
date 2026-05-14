@@ -13,6 +13,7 @@ type Config struct {
 	GitHubRepo   string
 	GitHubOwner  string
 	GitHubPath   string
+	GitHubBranch string
 	AdminSecret  string
 	Port         string
 }
@@ -28,13 +29,19 @@ func LoadConfig() Config {
 		port = "8080"
 	}
 
+	branch := os.Getenv("GITHUB_BRANCH")
+	if branch == "" {
+		branch = "main" // default to main if not provided
+	}
+
 	return Config{
-		MongoURI:    os.Getenv("MONGO_URI"),
-		GitHubToken: os.Getenv("GITHUB_TOKEN"),
-		GitHubRepo:  os.Getenv("GITHUB_REPO"),
-		GitHubOwner: os.Getenv("GITHUB_OWNER"),
-		GitHubPath:  os.Getenv("GITHUB_PATH"),
-		AdminSecret: os.Getenv("ADMIN_SECRET"),
-		Port:        port,
+		MongoURI:     os.Getenv("MONGO_URI"),
+		GitHubToken:  os.Getenv("GITHUB_TOKEN"),
+		GitHubRepo:   os.Getenv("GITHUB_REPO"),
+		GitHubOwner:  os.Getenv("GITHUB_OWNER"),
+		GitHubPath:   os.Getenv("GITHUB_PATH"),
+		GitHubBranch: branch,
+		AdminSecret:  os.Getenv("ADMIN_SECRET"),
+		Port:         port,
 	}
 }
