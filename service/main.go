@@ -57,7 +57,8 @@ func main() {
 		})
 
 		api.GET("/articles", func(c *gin.Context) {
-			articles, err := database.GetAllArticles(c.Request.Context())
+			searchQuery := c.Query("q")
+			articles, err := database.GetAllArticles(c.Request.Context(), searchQuery)
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 				return
@@ -78,7 +79,7 @@ func main() {
 				return
 			}
 
-			syncToGitHub(c.Request.Context(), cfg, database)
+			syncToGitHub(cfg, database)
 
 			c.JSON(http.StatusCreated, createdArticle)
 		})
@@ -102,7 +103,7 @@ func main() {
 				return
 			}
 
-			syncToGitHub(c.Request.Context(), cfg, database)
+			syncToGitHub(cfg, database)
 
 			c.JSON(http.StatusOK, gin.H{"message": "Updated successfully"})
 		})
@@ -120,7 +121,7 @@ func main() {
 				return
 			}
 
-			syncToGitHub(c.Request.Context(), cfg, database)
+			syncToGitHub(cfg, database)
 
 			c.JSON(http.StatusOK, gin.H{"message": "Deleted successfully"})
 		})
@@ -131,10 +132,10 @@ func main() {
 	}
 }
 
-func syncToGitHub(ctx context.Context, cfg config.Config, database *db.DB) {
+func syncToGitHub(cfg config.Config, database *db.DB) {
 	// Best effort sync, we can just run it synchronously or asynchronously
 	go func() {
-		articles, err := database.GetAllArticles(context.Background())
+		articles, err := database.GetAllArticles(context.Background(), "")
 		if err != nil {
 			fmt.Printf("Failed to get articles for sync: %v\n", err)
 			return

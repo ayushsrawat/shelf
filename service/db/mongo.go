@@ -47,9 +47,22 @@ func (db *DB) Disconnect() {
 	}
 }
 
-func (db *DB) GetAllArticles(ctx context.Context) ([]models.Article, error) {
+func (db *DB) GetAllArticles(ctx context.Context, searchQuery string) ([]models.Article, error) {
 	var articles []models.Article
-	cursor, err := db.collection.Find(ctx, bson.M{})
+	
+	filter := bson.M{}
+	if searchQuery != "" {
+		regexPattern := primitive.Regex{Pattern: searchQuery, Options: "i"}
+		filter = bson.M{
+			"$or": []bson.M{
+				{"title": regexPattern},
+				{"author": regexPattern},
+				{"category": regexPattern},
+			},
+		}
+	}
+
+	cursor, err := db.collection.Find(ctx, filter)
 	if err != nil {
 		return nil, err
 	}

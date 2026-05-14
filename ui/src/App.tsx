@@ -3,7 +3,7 @@ import { Routes, Route, useLocation, Link } from "react-router-dom";
 import { getArticles } from "./utils/dataFetcher";
 import type { Article } from "./interfaces/Article";
 import HomePageView from "./pages/HomePageView";
-import AddArticlePage from "./pages/AddArticlePage";
+import AdminDashboard from "./pages/AdminDashboard";
 import ThemeToggle from "./components/ThemeToggle";
 import "./App.css";
 
@@ -79,7 +79,7 @@ function App() {
           element={
             <main className="app-main">
               <div className="tab-content-wrapper admin-wrapper">
-                <AddArticlePage />
+                <AdminDashboard />
               </div>
             </main>
           }
