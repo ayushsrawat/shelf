@@ -133,7 +133,6 @@ func main() {
 }
 
 func syncToGitHub(cfg config.Config, database *db.DB) {
-	// Best effort sync, we can just run it synchronously or asynchronously
 	go func() {
 		articles, err := database.GetAllArticles(context.Background(), "")
 		if err != nil {
@@ -141,10 +140,10 @@ func syncToGitHub(cfg config.Config, database *db.DB) {
 			return
 		}
 
-		if err := github.UpdateArticlesInRepo(cfg, articles); err != nil {
-			fmt.Printf("Failed to sync to GitHub: %v\n", err)
+		if err := github.UpdateArticlesInGist(cfg, articles); err != nil {
+			fmt.Printf("Failed to sync to Gist: %v\n", err)
 		} else {
-			fmt.Println("Successfully synced articles to GitHub repo!")
+			fmt.Println("Successfully synced articles to Gist!")
 		}
 	}()
 }
